@@ -1,37 +1,27 @@
 <!DOCTYPE html>
-
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta charset="utf8">
 	<title>VideoPlayer</title>
-
 	<script type="text/javascript" src="javascript/controls.js"></script>
 	<link rel="stylesheet" href="css/display.css">
-	  <!--
-	 <script type="text/javascript" src="../public/javascript/controls.js"></script>
-	<link rel="stylesheet" href="../public/css/display.css">
-	-->
 </head>
 
-<body onload="loadXML(); set_sync_frames();">
+<body onload="	loadXML(); set_sync_frames();"/>
+
 
 <header>
-	<div id="title"><h1>VideoID:<span id="videoID"></span></h1></div> 
+	<div id="title"><h1>VideoID: <span id="videoname"></span></h1></div>
 	<div id="logo"><img src="css/img/logo.png" alt="logo"></div>
-	<!--
-	<div id="logo"><img src="../public/css/img/logo.png" alt="logo"></div>
-	-->
 </header>
 
+
 <div id="sections">
-<section><!-- tobi video section  -->
+
+<!-- tobi video section  -->
+<section>
 <h1>Glasses</h1>
-<video id="videoT">
-	<source src="uploads/Gvideo.mp4" type="video/mp4">
-<!--
-	 <source src="../public/uploads/Gvideo.mp4" type="video/mp4">
--->
-</video>
+<video id="videoT" src="./uploads/Gvideo.mp4" preload></video>
 
 <script type="text/javascript">
 	var videoT = document.getElementById("videoT");
@@ -40,7 +30,6 @@
 			document.getElementById("current_frame_T").innerHTML = Math.round(videoT.currentTime/localStorage.getItem('frameTimeT'));
 			document.getElementById("slidebar_T").value = Math.round(videoT.currentTime/videoT.duration*100);
 	};
-
 </script>
 
 <div id="controls">
@@ -54,26 +43,20 @@
 		Frame : <span id="current_frame_T">0</span>
 		<input id="slidebar_T" type="range" min="0" max="100" value="0" onchange="update_frame(1)">
 	</div>
-
-
 	<div id="sync_controls">
 		Synchronization frame : <span id="sync_frame_T">0</span>
 		<button id="get_sync_frame" onclick="get_sync_frame(1);">Get frame</button>
 		<button id="go_to_sync_frame" onclick="go_to_sync_frame(1);">Go to sync frame</button>
 	</div>
 </div>
-
 </section>
+<section>
 
 
-<section><!-- GoPro video section  -->
+<!-- GoPro video section  -->
 <h1>GoPro</h1>
 <video id="videoGoPro">
- 
 	<source src="uploads/Lvideo.mp4" type="video/mp4">
-<!--
-	<source src="../public/uploads/Lvideo.mp4" type="video/mp4">
-	-->
 </video>
 
 <script type="text/javascript">
@@ -92,7 +75,6 @@
 		<button id="stop" onclick="stop(2);"></button>
 		<button id="previous" onclick="previous_frame(2);"></button>
 		<button id="next" onclick="next_frame(2);"></button>
-
 		Frame : <span id="current_frame_GP">0</span>
 		<input id="slidebar_GP" type="range" min="0" max="100" value="0" onchange="update_frame(2)">
 	</div>
@@ -102,31 +84,16 @@
 		<button id="get_sync_frame" onclick="get_sync_frame(2);">Get frame</button>
 		<button id="go_to_sync_frame" onclick="go_to_sync_frame(2);">Go to sync frame</button>
 	</div>
-
-
 </div>
-
 </section>
-
-
 </div>
 
-
-
-
-<footer><!-- Save button section  -->
-
-	<button id="back_home" onclick="reset(); location.href='/';">Home</button>
+<!-- Save button section  -->
+<footer>
+	<button id="back_home" onclick="reset();">Home</button>
 	<button id="save" onclick="save();">Save</button>
 	<button id="preview" onclick=" location.href='/preview';">Preview</button>
-<!--
-	<button id="back_home" onclick="reset(); location.href='upload.html';">Home</button>
-	<button id="save" onclick=" save();">Save</button>
-	<button id="preview" onclick=" location.href='preview.html';">Preview</button>
-	-->
 </footer>
-
-
 
 </body>
 </html>

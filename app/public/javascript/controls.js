@@ -1,36 +1,21 @@
-//frame rates, TO DO get them from the parsed file;
-/*
-var frameTimeT = 1/25;
-var frameTimeGP = 1/60;
-*/
-
-
-
 function play(v_index){
-
 	//plays the right video : index 1 -> videoT, index 2 -> videoGP
-
 	if(v_index == 1){
 		if(videoT.paused)
 			videoT.play()
-
 	}
 	else if(v_index == 2){
 		if(videoGP.paused)
 			videoGP.play();
-
 	}
 	else{
 		alert("Error play(): video index invalid");
 	}
-
 }
 
 
 function pause(v_index){
-
 	//pauses the right video : index 1 -> videoT, index 2 -> videoGP
-
 	if(v_index == 1){
 		if(!videoT.paused)
 			videoT.pause()
@@ -42,13 +27,10 @@ function pause(v_index){
 	else{
 		alert("Error pause(): video index invalid");
 	}
-
 }
 
 function stop(v_index){
-
 	//stops the right video : index 1 -> videoT, index 2 -> videoGP
-
 	if(v_index == 1){
 		pause(1);
 		videoT.currentTime = 0;
@@ -60,30 +42,7 @@ function stop(v_index){
 	else{
 		alert("Error : video index invalid");
 	}
-
 }
-
-//spacebar = play/pause
-//is not working yet : videoT is playing for only 1sec before pausing, I don't know why
-/*
-document.onkeypress=function(){
-	var key = window.event.keyCode;
-	if(key==32){
-
-		if(videoT.paused && videoGP.paused){
-			videoT.play();
-			videoGP.play();
-		}
-
-		else if(!videoT.paused && !videoGP.paused){
-			videoT.pause();
-			videoGP.pause();
-		}
-		else{}
-
-	}
-}
-*/
 
 function next_frame(v_index){
 	if(v_index == 1){
@@ -147,26 +106,23 @@ function preview_stop(){
 
 		pause(2);
 		videoGP.currentTime = localStorage.getItem('start_frame_GP') * localStorage.getItem('frameTimeGP');
-
 }
-
 
 
 function get_sync_frame(v_index){
 	if(v_index == 1){
 		document.getElementById("sync_frame_T").innerHTML = Math.round(videoT.currentTime/localStorage.getItem('frameTimeT'));
 		localStorage.setItem('sync_frame_T', Math.round(videoT.currentTime/localStorage.getItem('frameTimeT')));
-
-
+		console.log('Get: Glasses key frame');
 	}
 	else if(v_index == 2){
 		document.getElementById("sync_frame_GP").innerHTML = Math.round(videoGP.currentTime/localStorage.getItem('frameTimeGP'));
 		localStorage.setItem('sync_frame_GP', Math.round(videoGP.currentTime/localStorage.getItem('frameTimeGP')));
+		console.log('Get: GoPro key frame');
 	}
 	else{
 		alert("Error get_sync_frame() : video index invalid");
 	}
-
 }
 
 function go_to_sync_frame(v_index){
@@ -181,18 +137,16 @@ function go_to_sync_frame(v_index){
 	}
 }
 
+
 //set sync frames fields when the page load
 function set_sync_frames(){
 	if(localStorage.getItem('sync_frame_T') && localStorage.getItem('sync_frame_GP')){
 		document.getElementById("sync_frame_T").innerHTML = localStorage.getItem('sync_frame_T');
 		document.getElementById("sync_frame_GP").innerHTML = localStorage.getItem('sync_frame_GP');
 	}
-
-	document.getElementById("videoID").innerHTML = localStorage.getItem('videoID');
 }
 
 //updates the video current time with the slidebar
-
 function update_frame(v_index){
 
 	if(v_index == 1){
@@ -204,12 +158,18 @@ function update_frame(v_index){
 	else{
 		alert("Error update_frame() : video index invalid");
 	}
-
-
 }
 
 function reset(){
-	localStorage.clear();
+	var txt;
+	var r = confirm("Are you sure to go home?\nYour work will be discarted...");
+	if (r == true) {
+	    txt = "You pressed OK!";
+		localStorage.clear();
+		location.href='/';
+	} else {
+	    txt = "You pressed Cancel!";
+	}
 }
 
 
@@ -225,7 +185,7 @@ function get_start_end_frames(){
 			localStorage.setItem('end_frame_GP', Math.round((videoT.duration - (sync_time_T - sync_time_GP))/localStorage.getItem('frameTimeGP')));
 		}
 		else{
-			localStorage.setItem('end_frame_T', Math.round((videoG.duration + (sync_time_T - sync_time_GP)) /localStorage.getItem('frameTimeT')));
+			localStorage.setItem('end_frame_T', Math.round((videoGP.duration + (sync_time_T - sync_time_GP)) /localStorage.getItem('frameTimeT')));
 			localStorage.setItem('end_frame_GP', Math.round(videoGP.duration/localStorage.getItem('frameTimeGP')));
 		}
 	}
@@ -238,7 +198,7 @@ function get_start_end_frames(){
 			localStorage.setItem('end_frame_GP', Math.round((videoT.duration + (sync_time_GP - sync_time_T))/localStorage.getItem('frameTimeGP')));
 		}
 		else{
-			localStorage.setItem('end_frame_T', Math.round((videoG.duration - (sync_time_GP - sync_time_T)) /localStorage.getItem('frameTimeT')));
+			localStorage.setItem('end_frame_T', Math.round((videoGP.duration - (sync_time_GP - sync_time_T)) /localStorage.getItem('frameTimeT')));
 			localStorage.setItem('end_frame_GP', Math.round(videoGP.duration/localStorage.getItem('frameTimeGP')));
 		}
 	}
@@ -251,6 +211,7 @@ function loadXML(){
 	    if (this.readyState == 4 && this.status == 200) {
 	        readXML(this);
 	    }
+		console.log("ReadingXML...");
 	};
 
 	xhttp.open("GET", "data.xml", true);
@@ -265,8 +226,7 @@ function readXML(xml){
 	localStorage.setItem('frameTimeGP', 1/( data.getElementsByTagName('current_observation')[0].getElementsByTagName('frameRate_l')[0].childNodes[0].nodeValue ));
 	localStorage.setItem('videoID', data.getElementsByTagName('current_observation')[0].getElementsByTagName('videoName')[0].childNodes[0].nodeValue);
 	localStorage.setItem('delayRL',data.getElementsByTagName('current_observation')[0].getElementsByTagName('delayRL')[0].childNodes[0].nodeValue);
-
-
+	document.getElementById("videoname").innerHTML = localStorage.getItem('videoID');
 }
 
 

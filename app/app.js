@@ -7,36 +7,39 @@ var fs = require('fs');
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', function(req, res){
-  res.sendFile(path.join(__dirname, 'views/upload.html'));
+  res.sendFile(path.join(__dirname, 'views/index.html'));
 });
-
 
 app.get('/synchro', function(req, res){
-  var file = fs.readdirSync('public/uploads',(err, files) => {  })
-
-  var i;
-  for (i=0;i<file.length;i++)
-  {
-    var ext = path.extname(file[i])
-    if (ext != '.mp4')
-    {
-      console.log(i);
-      break;
+    var file = fs.readdirSync('public/uploads',(err, files) => {  })
+    var i;
+    for (i=0;i<file.length;i++){
+        var ext = path.extname(file[i])
+        if (ext != '.mp4'){
+            console.log(i);
+            break;
+        }
     }
 
-  }
-  var g = 'public/uploads/' + file[i];
-  var ext = path.extname(g)
+    var g = 'public/uploads/' + file[i];
+    var ext = path.extname(g)
 
-  if (ext != '.mp4')
-  {
-    console.log(ext);
-      const spawn = require('child_process').spawn;
-      const shinfo = spawn('sh',['info.sh', 'public/uploads/Rvideo.mp4', 'public/uploads/Lvideo.mp4','public/uploads/Gvideo.mp4', g]);
-  }
-
-  res.sendFile(path.join(__dirname, 'views/player.html'));
+    if (ext != '.mp4')
+    {
+        const spawn = require('child_process').spawn;
+        const shinfo = spawn('sh',['info.sh', 'public/uploads/Rvideo.mp4', 'public/uploads/Lvideo.mp4','public/uploads/Gvideo.mp4', g]);
+    }
+    console.log('Data created...');
+    var currentTime = new Date().getTime();
+    while (currentTime + 1000 >= new Date().getTime()) {
+    }
+    res.sendFile(path.join(__dirname, 'views/player.html'));
 });
+
+
+// app.get('/synchro', function(req, res){
+//     res.sendFile(path.join(__dirname, 'views/player.html'));
+// });
 
 app.get('/preview', function(req, res){
   res.sendFile(path.join(__dirname, 'views/preview.html'));
@@ -66,13 +69,9 @@ app.post('/upload', function(req, res){
   form.on('end', function() {
     res.end('success');
   });
-
   // parse the incoming request containing the form data
   form.parse(req);
-
 });
-
-
 
 var server = app.listen(3000, function(){
   console.log('Server listening on port 3000');
