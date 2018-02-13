@@ -2,12 +2,17 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta charset="utf8">
+	<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
 	<title>VideoPlayer</title>
 	<script type="text/javascript" src="javascript/controls.js"></script>
 	<link rel="stylesheet" href="css/display.css">
 </head>
 
-<body onload="	loadXML(); set_sync_frames();"/>
+<body>
+<script type="text/javascript">
+	loadXML();
+	set_sync_frames();
+</script>
 
 
 <header>
@@ -21,7 +26,11 @@
 <!-- tobi video section  -->
 <section>
 <h1>Glasses</h1>
-<video id="videoT" src="./uploads/Gvideo.mp4" preload></video>
+<!-- <video id="videoT" src="./uploads/Gvideo.mp4" preload></video> -->
+
+<video id="videoT">
+	<source src="uploads/Gvideo.mp4" type="video/mp4">
+</video>
 
 <script type="text/javascript">
 	var videoT = document.getElementById("videoT");

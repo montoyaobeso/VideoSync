@@ -1,3 +1,6 @@
+var fs = require('fs');
+
+
 function play(v_index){
 	//plays the right video : index 1 -> videoT, index 2 -> videoGP
 	if(v_index == 1){
@@ -205,6 +208,13 @@ function get_start_end_frames(){
 }
 
 
+function get_videonames(){
+	var files = fs.readdirSync('/assets/photos/');
+	console.log(files);
+}
+
+
+
 function loadXML(){
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
@@ -226,6 +236,8 @@ function readXML(xml){
 	localStorage.setItem('frameTimeGP', 1/( data.getElementsByTagName('current_observation')[0].getElementsByTagName('frameRate_l')[0].childNodes[0].nodeValue ));
 	localStorage.setItem('videoID', data.getElementsByTagName('current_observation')[0].getElementsByTagName('videoName')[0].childNodes[0].nodeValue);
 	localStorage.setItem('delayRL',data.getElementsByTagName('current_observation')[0].getElementsByTagName('delayRL')[0].childNodes[0].nodeValue);
+	localStorage.setItem('delayRL',data.getElementsByTagName('current_observation')[0].getElementsByTagName('delayRL')[0].childNodes[0].nodeValue);
+
 	document.getElementById("videoname").innerHTML = localStorage.getItem('videoID');
 }
 

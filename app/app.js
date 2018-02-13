@@ -4,13 +4,27 @@ var path = require('path');
 var formidable = require('formidable');
 var fs = require('fs');
 
+var LocalStorage = require('node-localstorage').LocalStorage,
+localStorage = new LocalStorage('./scratch');
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', function(req, res){
-  res.sendFile(path.join(__dirname, 'views/index.html'));
+
+    // DELETE ALL PREVIOUS FILES
+    var files = fs.readdirSync(path.join(__dirname, 'public/uploads/'));
+    if (files.length > 0){
+        for (var i = 0; i < files.length; i++) {
+          var filePath = path.join(__dirname, 'public/uploads/') + files[i];
+          fs.unlinkSync(filePath);
+        }
+    }
+    var videoTag = new Date().getTime();
+    localStorage.setItem('videoTag', videoTag);
+    res.sendFile(path.join(__dirname, 'views/index.html'));
 });
 
-app.get('/synchro', function(req, res){
+app.get('/processdata', function(req, res){
     var file = fs.readdirSync('public/uploads',(err, files) => {  })
     var i;
     for (i=0;i<file.length;i++){
@@ -29,9 +43,8 @@ app.get('/synchro', function(req, res){
         const spawn = require('child_process').spawn;
         const shinfo = spawn('sh',['info.sh', 'public/uploads/Rvideo.mp4', 'public/uploads/Lvideo.mp4','public/uploads/Gvideo.mp4', g]);
     }
-    console.log('Data created...');
     var currentTime = new Date().getTime();
-    while (currentTime + 1000 >= new Date().getTime()) {
+    while (currentTime + 3000 >= new Date().getTime()) {
     }
     res.sendFile(path.join(__dirname, 'views/player.html'));
 });
@@ -58,7 +71,8 @@ app.post('/upload', function(req, res){
   // every time a file has been uploaded successfully,
   // rename it to it's orignal name
   form.on('file', function(field, file) {
-    fs.rename(file.path, path.join(form.uploadDir, file.name));
+      console.log('CURRENT VIDEO TAG: '+ localStorage.getItem('videoTag') + '_' + file.name);
+      fs.rename(file.path, path.join(form.uploadDir, localStorage.getItem('videoTag') + '_' + file.name));
   });
 
   // log any errors that occur
@@ -71,6 +85,7 @@ app.post('/upload', function(req, res){
   });
   // parse the incoming request containing the form data
   form.parse(req);
+  delete form;
 });
 
 var server = app.listen(3000, function(){
