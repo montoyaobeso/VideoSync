@@ -1,5 +1,3 @@
-var fs = require('fs');
-
 
 function play(v_index){
 	//plays the right video : index 1 -> videoT, index 2 -> videoGP
@@ -165,13 +163,10 @@ function update_frame(v_index){
 
 function reset(){
 	var txt;
-	var r = confirm("Are you sure to go home?\nYour work will be discarted...");
+	var r = confirm("Are you sure to go home?\nYour work will be discarded...");
 	if (r == true) {
-	    txt = "You pressed OK!";
 		localStorage.clear();
 		location.href='/';
-	} else {
-	    txt = "You pressed Cancel!";
 	}
 }
 
@@ -208,10 +203,7 @@ function get_start_end_frames(){
 }
 
 
-function get_videonames(){
-	var files = fs.readdirSync('/assets/photos/');
-	console.log(files);
-}
+
 
 
 
@@ -234,7 +226,7 @@ function readXML(xml){
 	var data = xml.responseXML;
 	localStorage.setItem('frameTimeT', 1/( data.getElementsByTagName('current_observation')[0].getElementsByTagName('frameRate_g')[0].childNodes[0].nodeValue ));
 	localStorage.setItem('frameTimeGP', 1/( data.getElementsByTagName('current_observation')[0].getElementsByTagName('frameRate_l')[0].childNodes[0].nodeValue ));
-	localStorage.setItem('videoID', data.getElementsByTagName('current_observation')[0].getElementsByTagName('videoName')[0].childNodes[0].nodeValue);
+	//localStorage.setItem('videoID', data.getElementsByTagName('current_observation')[0].getElementsByTagName('videoName')[0].childNodes[0].nodeValue);
 	localStorage.setItem('delayRL',data.getElementsByTagName('current_observation')[0].getElementsByTagName('delayRL')[0].childNodes[0].nodeValue);
 	localStorage.setItem('delayRL',data.getElementsByTagName('current_observation')[0].getElementsByTagName('delayRL')[0].childNodes[0].nodeValue);
 
