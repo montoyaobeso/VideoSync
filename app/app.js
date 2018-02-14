@@ -21,26 +21,37 @@ app.get('/', function(req, res){
 });
 
 app.get('/synchro', function(req, res){
-    var file = fs.readdirSync('public/uploads',(err, files) => {  })
-    var i;
-    for (i=0;i<file.length;i++){
-        var ext = path.extname(file[i])
+    var files = fs.readdirSync(path.join(__dirname, 'public/uploads/'));
+    for (var i=0;i<files.length;i++){
+        var ext = path.extname(files[i])
+        var patt = new RegExp("Gvideo");
+        if( patt.test(files[i]) ){
+            var Gvideo = files[i];
+        }
+        var patt = new RegExp("Rvideo");
+        if( patt.test(files[i]) ){
+            var Rvideo = files[i];
+        }
+        var patt = new RegExp("Lvideo");
+        if( patt.test(files[i]) ){
+            var Lvideo = files[i];
+        }
+        var ext = path.extname(files[i])
         if (ext != '.mp4'){
-            console.log(i);
-            break;
+            var Name = files[i];
         }
     }
 
-    var g = 'public/uploads/' + file[i];
-    var ext = path.extname(g)
+    var GvideoPath = path.join(__dirname, 'public/uploads/' + Gvideo)
+    var LvideoPath = path.join(__dirname, 'public/uploads/' + Lvideo)
+    var RvideoPath = path.join(__dirname, 'public/uploads/' + Rvideo)
+    var NamevideoPath = path.join(__dirname, 'public/uploads/' + Name)
 
-    if (ext != '.mp4')
-    {
-        const spawn = require('child_process').spawn;
-        const shinfo = spawn('sh',['info.sh', 'public/uploads/Rvideo.mp4', 'public/uploads/Lvideo.mp4','public/uploads/Gvideo.mp4', g]);
-    }
+    const spawn = require('child_process').spawn;
+    const shinfo = spawn('sh',['info.sh', RvideoPath, LvideoPath , GvideoPath, NamevideoPath]);
+
     var currentTime = new Date().getTime();
-    while (currentTime + 3000 >= new Date().getTime()) {
+    while (currentTime + 200 >= new Date().getTime()) {
     }
     res.sendFile(path.join(__dirname, 'views/player.html'));
 });
