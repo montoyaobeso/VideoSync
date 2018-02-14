@@ -1,16 +1,10 @@
 <!DOCTYPE html>
-
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta charset="utf8">
 	<title>VideoPlayer</title>
-
 	<script type="text/javascript" src="javascript/controls.js"></script>
 	<link rel="stylesheet" href="css/display.css">
-<!--
-	 <script type="text/javascript" src="../public/javascript/controls.js"></script>
-	<link rel="stylesheet" href="../public/css/display.css">
--->
 </head>
 
 <body>
@@ -18,37 +12,28 @@
 <header>
 	<div id="title"><h1>Preview</h1></div>
 	<div id="logo"><img src="css/img/logo.png" alt="logo"></div>
-	 <!--
-	<div id="logo"><img src="../public/css/img/logo.png" alt="logo"></div>
-	-->
 </header>
 
 <div id="sections">
 <section>
 	<video id="videoT">
-
-		<source src="uploads/Gvideo.mp4" type="video/mp4">
-<!--
-		 <source src="../public/uploads/Gvideo.mp4" type="video/mp4">
-		 -->
+		<source src="" type="video/mp4">
 	</video>
 </section>
 
-
-
 <section><!--  GoPro -->
 	<video id="videoGP">
-		<source src="uploads/Lvideo.mp4" type="video/mp4">
-<!--
-		<source src="../public/uploads/Lvideo.mp4" type="video/mp4">
-		-->
+		<source src="" type="video/mp4">
 	</video>
-
 </section>
 
 <script type="text/javascript">
 	var videoT = document.getElementById("videoT");
+	videoT.src = 'uploads/' + localStorage.getItem('GvideoTag');
+
 	var videoGP = document.getElementById("videoGP");
+	videoGP.src = 'uploads/' + localStorage.getItem('LvideoTag');
+
 	//updates the current frame counter
 	videoT.ontimeupdate = function(){
 			document.getElementById("current_frame_T").innerHTML = Math.round(videoT.currentTime/localStorage.getItem('frameTimeT'));
@@ -58,7 +43,6 @@
 	};
 
 </script>
-
 <div id="preview_controls">
 	<div id="general_controls">
 		<button id="play" onclick="preview_play();;"></button>
@@ -73,13 +57,9 @@
 </div>
 
 <footer>
-
+	<button id="back_home" onclick="reset();">Home</button>
 	<button id="save" onclick="save(); location.href = '/synchro';">Save</button>
 	<button id="cancel" onclick="location.href = '/synchro';">Cancel</button>
-<!--
-	 <button id="save" onclick="save(); location.href = 'player.html';">Save</button>
-	 <button id="cancel" onclick="location.href = 'player.html';">Cancel</button>
-	 -->
 </footer>
 
 

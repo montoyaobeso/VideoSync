@@ -8,12 +8,7 @@
 	<link rel="stylesheet" href="css/display.css">
 </head>
 
-<body>
-<script type="text/javascript">
-	loadXML();
-	set_sync_frames();
-</script>
-
+<body onload="loadXML(); set_sync_frames();">
 
 <header>
 	<div id="title"><h1>VideoID: <span id="videoname"></span></h1></div>
@@ -26,19 +21,21 @@
 <!-- tobi video section  -->
 <section>
 <h1>Glasses</h1>
-<!-- <video id="videoT" src="./uploads/Gvideo.mp4" preload></video> -->
 
-<video id="videoT">
-	<source src="uploads/Gvideo.mp4" type="video/mp4">
+<video id="videoT" >
+     <source src="" type="video/mp4" />
 </video>
 
 <script type="text/javascript">
 	var videoT = document.getElementById("videoT");
+	videoT.src = 'uploads/' + localStorage.getItem('GvideoTag');
+	videoT.load()
 	//updates the current frame counter
 	videoT.ontimeupdate = function(){
 			document.getElementById("current_frame_T").innerHTML = Math.round(videoT.currentTime/localStorage.getItem('frameTimeT'));
 			document.getElementById("slidebar_T").value = Math.round(videoT.currentTime/videoT.duration*100);
 	};
+	get_sync_frame(1);
 </script>
 
 <div id="controls">
@@ -64,17 +61,21 @@
 
 <!-- GoPro video section  -->
 <h1>GoPro</h1>
-<video id="videoGoPro">
-	<source src="uploads/Lvideo.mp4" type="video/mp4">
+<video id="videoGoPro" >
+     <source src="" type="video/mp4" />
 </video>
 
 <script type="text/javascript">
 	var videoGP = document.getElementById("videoGoPro");
+	videoGP.src = 'uploads/' + localStorage.getItem('LvideoTag');
+	videoGP.load()
+
 	//updates the current frame counter
 	videoGP.ontimeupdate = function(){
 		document.getElementById("current_frame_GP").innerHTML = Math.round(videoGP.currentTime/localStorage.getItem('frameTimeGP'));
 		document.getElementById("slidebar_GP").value = Math.round(videoGP.currentTime/videoGP.duration*100);
 	};
+	get_sync_frame(2);
 </script>
 
 <div id="controls">
@@ -103,6 +104,7 @@
 	<button id="save" onclick="save();">Save</button>
 	<button id="preview" onclick=" location.href='/preview';">Preview</button>
 </footer>
+
 
 </body>
 </html>
