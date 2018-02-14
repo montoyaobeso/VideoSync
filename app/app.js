@@ -4,8 +4,6 @@ var path = require('path');
 var formidable = require('formidable');
 var fs = require('fs');
 
-var LocalStorage = require('node-localstorage').LocalStorage,
-localStorage = new LocalStorage('./scratch');
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -19,12 +17,10 @@ app.get('/', function(req, res){
           fs.unlinkSync(filePath);
         }
     }
-    var videoTag = new Date().getTime();
-    localStorage.setItem('videoTag', videoTag);
     res.sendFile(path.join(__dirname, 'views/index.html'));
 });
 
-app.get('/processdata', function(req, res){
+app.get('/synchro', function(req, res){
     var file = fs.readdirSync('public/uploads',(err, files) => {  })
     var i;
     for (i=0;i<file.length;i++){
@@ -50,13 +46,10 @@ app.get('/processdata', function(req, res){
 });
 
 
-// app.get('/synchro', function(req, res){
-//     res.sendFile(path.join(__dirname, 'views/player.html'));
-// });
-
 app.get('/preview', function(req, res){
   res.sendFile(path.join(__dirname, 'views/preview.html'));
 });
+
 
 app.post('/upload', function(req, res){
 
@@ -71,8 +64,7 @@ app.post('/upload', function(req, res){
   // every time a file has been uploaded successfully,
   // rename it to it's orignal name
   form.on('file', function(field, file) {
-      console.log('CURRENT VIDEO TAG: '+ localStorage.getItem('videoTag') + '_' + file.name);
-      fs.rename(file.path, path.join(form.uploadDir, localStorage.getItem('videoTag') + '_' + file.name));
+      fs.rename(file.path, path.join(form.uploadDir, file.name));
   });
 
   // log any errors that occur
