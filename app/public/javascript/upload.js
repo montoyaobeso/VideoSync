@@ -21,6 +21,7 @@ $('#g-upload-input').on('change', function(){
     localStorage.setItem('GvideoTag', GvideoTag);
     localStorage.setItem('videoID', name)
 
+    formData.append('Gvideo',  $('input[type=file]')[0].files[0], name);
     formData.append('Gvideo',  $('input[type=file]')[0].files[0], GvideoTag);
 
     $.ajax({
